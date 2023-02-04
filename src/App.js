@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+// import ErrorMessage from "./components/ErrorMessage";
 
 function App() {
   const CLIENT_ID = "4081228661664398aa13c58607ba9675";
@@ -10,6 +11,10 @@ function App() {
 
   const [token, setToken] = useState("");
   const [searchKey, setSearchKey] = useState("");
+  const [searchType, setSearchType] = useState("artist");
+  const [errorVisibility, setErrorMessage] = useState("hidden");
+
+  // const [searchResponse, setSearchResponse] = useState([])
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -34,22 +39,80 @@ function App() {
     window.localStorage.removeItem("token");
   };
   const searchTerm = async (e) => {
-    e.preventDefault();
-    const { data } = await axios.get("https://api.spotify.com/v1/search", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
-        q: searchKey,
-        type: "artist",
-      },
-    });
-    console.log(data);
+    if (searchType === "artist" && searchKey !== "") {
+      setErrorMessage("hidden");
+      e.preventDefault();
+      const { data } = await axios.get("https://api.spotify.com/v1/search", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          q: searchKey,
+          type: "artist",
+        },
+      });
+      console.log(data);
+    } else if (searchType === "album") {
+      e.preventDefault();
+      const { data } = await axios.get("https://api.spotify.com/v1/search", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          q: searchKey,
+          type: "album",
+        },
+      });
+      console.log(data);
+    } else if (searchType === "track") {
+      e.preventDefault();
+      const { data } = await axios.get("https://api.spotify.com/v1/search", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          q: searchKey,
+          type: "track",
+        },
+      });
+      console.log(data);
+    } else {
+      setErrorMessage("visible");
+    }
   };
 
   return (
     <div>
       <h1>Spotify API</h1>
+      {token ? (
+        <div>
+          {" "}
+          <h2>searching by {searchType}</h2>
+          <form onSubmit={searchTerm}>
+            <input
+              type="text"
+              onChange={(e) => setSearchKey(e.target.value)}
+            />
+            <select
+              value={searchType}
+              id="search-type"
+              onChange={(e) => setSearchType(e.target.value)}
+            >
+              <option
+                value="artist"
+                defaultChecked
+              >
+                Artist
+              </option>
+              <option value="album">Album</option>
+              <option value="track">Track</option>
+            </select>
+            <button type={"submit"}>search</button>
+          </form>
+        </div>
+      ) : (
+        <h2>Please login!</h2>
+      )}
       {!token ? (
         <a
           href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
@@ -57,18 +120,10 @@ function App() {
           Login to Spotify
         </a>
       ) : (
-        <button onClick={logout}>Logout</button>
-      )}
-      {token ? (
-        <form onSubmit={searchTerm}>
-          <input
-            type="text"
-            onChange={(e) => setSearchKey(e.target.value)}
-          />
-          <button type={"submit"}>search</button>
-        </form>
-      ) : (
-        <h2>Please login!</h2>
+        <div>
+          <p className={errorVisibility}>Please enter a search term!</p>
+          <button onClick={logout}>Logout</button>
+        </div>
       )}
     </div>
   );
