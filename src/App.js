@@ -1,5 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
   const CLIENT_ID = "4081228661664398aa13c58607ba9675";
@@ -8,6 +9,7 @@ function App() {
   const RESPONSE_TYPE = "token";
 
   const [token, setToken] = useState("");
+  const [searchKey, setSearchKey] = useState("");
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -27,14 +29,47 @@ function App() {
     setToken(token);
   }, []);
 
+  const logout = () => {
+    setToken("");
+    window.localStorage.removeItem("token");
+  };
+  const searchTerm = async (e) => {
+    e.preventDefault();
+    const { data } = await axios.get("https://api.spotify.com/v1/search", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        q: searchKey,
+        type: "artist",
+      },
+    });
+    console.log(data);
+  };
+
   return (
     <div>
       <h1>Spotify API</h1>
-      <a
-        href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
-      >
-        Login to Spotify
-      </a>
+      {!token ? (
+        <a
+          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
+        >
+          Login to Spotify
+        </a>
+      ) : (
+        <button onClick={logout}>Logout</button>
+      )}
+      {token ? (
+        <form onSubmit={searchTerm}>
+          <input
+            type="text"
+            onChange={(e) => setSearchKey(e.target.value)}
+          />
+          <button type={"submit"}>search</button>
+        </form>
+      ) : (
+        <h2>Please login!</h2>
+      )}
     </div>
   );
 }
