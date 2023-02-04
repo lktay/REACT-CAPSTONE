@@ -2,7 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 // import RenderArtists from "./components/renderArtists/renderArtists";
-// import ErrorMessage from "./components/ErrorMessage";
 
 function App() {
   const CLIENT_ID = "4081228661664398aa13c58607ba9675";
@@ -14,7 +13,8 @@ function App() {
   const [searchKey, setSearchKey] = useState("");
   const [searchType, setSearchType] = useState("artist");
   const [errorVisibility, setErrorMessage] = useState("hidden");
-  // const [searchResponse, setSearchResponse] = useState([]);
+  const [data, setData] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -52,17 +52,35 @@ function App() {
         },
       });
       console.log(data);
+      if (searchType === "artist") {
+        setData(data.artists.items);
+      } else if (searchType === "album") {
+        setData(data.albums.items);
+      } else {
+        setData(data.tracks.items);
+      }
+      setHasSearched("true");
     } else {
       setErrorMessage("visible");
+      setHasSearched("false");
+    }
+  };
+  const getComponent = (row) => {
+    if (searchType === "artist") {
+      return <renderArtists data={row} />;
+    } else if (searchType === "album") {
+      return <renderAlbums data={row} />;
+    } else {
+      return <renderTracks data={row} />;
     }
   };
 
   return (
     <div>
       <h1>Spotify API</h1>
+
       {token ? (
         <div>
-          {" "}
           <h2>searching by {searchType}</h2>
           <form onSubmit={searchTerm}>
             <input
@@ -89,6 +107,7 @@ function App() {
       ) : (
         <h2>Please login!</h2>
       )}
+      {hasSearched ? data.map((item) => getComponent(item)) : <></>}
       {!token ? (
         <a
           href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
