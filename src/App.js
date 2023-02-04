@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+// import RenderArtists from "./components/renderArtists/renderArtists";
 // import ErrorMessage from "./components/ErrorMessage";
 
 function App() {
@@ -13,8 +14,7 @@ function App() {
   const [searchKey, setSearchKey] = useState("");
   const [searchType, setSearchType] = useState("artist");
   const [errorVisibility, setErrorMessage] = useState("hidden");
-
-  // const [searchResponse, setSearchResponse] = useState([])
+  // const [searchResponse, setSearchResponse] = useState([]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -39,7 +39,7 @@ function App() {
     window.localStorage.removeItem("token");
   };
   const searchTerm = async (e) => {
-    if (searchType === "artist" && searchKey !== "") {
+    if (searchKey !== "") {
       setErrorMessage("hidden");
       e.preventDefault();
       const { data } = await axios.get("https://api.spotify.com/v1/search", {
@@ -48,33 +48,7 @@ function App() {
         },
         params: {
           q: searchKey,
-          type: "artist",
-        },
-      });
-      console.log(data);
-    } else if (searchType === "album" && searchKey !== "") {
-      setErrorMessage("hidden");
-      e.preventDefault();
-      const { data } = await axios.get("https://api.spotify.com/v1/search", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          q: searchKey,
-          type: "album",
-        },
-      });
-      console.log(data);
-    } else if (searchType === "track" && searchKey !== "") {
-      setErrorMessage("hidden");
-      e.preventDefault();
-      const { data } = await axios.get("https://api.spotify.com/v1/search", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          q: searchKey,
-          type: "track",
+          type: searchType,
         },
       });
       console.log(data);
