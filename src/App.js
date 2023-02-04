@@ -99,7 +99,7 @@ function App() {
       <h1>Spotify API</h1>
 
       {token ? (
-        <div>
+        <div className="searchBar">
           <h2>searching by {searchType}</h2>
           <form onSubmit={searchTerm}>
             <input
@@ -124,14 +124,15 @@ function App() {
           </form>
         </div>
       ) : (
-        <h2>Please login!</h2>
+        <h2>Please login by clicking the icon!</h2>
       )}
       {hasSearched ? data.map((item) => getComponent(item)) : <></>}
       {!token ? (
         <a
+          className="login"
           href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}
         >
-          Login to Spotify
+          <i class="fa-brands fa-spotify"></i>
         </a>
       ) : (
         <div>

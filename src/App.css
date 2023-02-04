@@ -4,3 +4,29 @@
 .hidden {
   visibility: hidden;
 }
+.searchBar {
+  margin: 5% auto;
+}
+
+h1 {
+  color: aquamarine;
+  text-shadow: 2px 3px black;
+}
+h2 {
+  font-weight: 300;
+  font-size: medium;
+}
+button,
+input,
+select {
+  background-color: aquamarine;
+  border: none;
+  border-radius: 15px 15px;
+  padding: 10px;
+  margin: auto 5px;
+}
+.login {
+  font-size: 25px;
+  color: black;
+  text-shadow: 2px 2px aquamarine;
+}

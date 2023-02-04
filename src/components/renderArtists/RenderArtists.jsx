@@ -1,21 +1,28 @@
 import React from "react";
+import { Stack } from "@mui/system";
 
 const RenderArtists = ({ item }) => {
   const artistID = `https://open.spotify.com/artist/${item.id}`;
   return (
-    <div>
+    <Stack
+      justifyContent="space-around"
+      alignItems="center"
+      direction="column"
+      marginBottom={6}
+    >
       <h2>{item.name}</h2>
       {item.images.length ? (
         <a href={artistID}>
           <img
-            src={item.images[0].url}
+            height="400px"
+            src={item.images[1].url}
             alt={item.name}
           />
         </a>
       ) : (
         <div>No Image</div>
       )}
-    </div>
+    </Stack>
   );
 };
 

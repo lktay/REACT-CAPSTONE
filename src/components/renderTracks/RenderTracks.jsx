@@ -1,25 +1,39 @@
 import React from "react";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, Divider } from "@mui/material";
+import "./RenderTracks.css";
 
 const RenderTracks = ({ item }) => {
   const albumID = `https://open.spotify.com/album/${item.id}`;
   return (
-    <Stack
-      direction="row"
-      spacing={2}
-    >
-      <div>
-        <a href={albumID}>
-          <img
-            src={item.album.images[2].url}
-            alt={item.name}
+    <div className="container">
+      <Stack
+        justifyContent="space-around"
+        alignItems="center"
+        direction="row"
+        divider={
+          <Divider
+            orientation="vertical"
+            flexItem
           />
-        </a>
-      </div>
-      <Typography variant="body1">
-        {item.name} by {item.artists[0].name}
-      </Typography>
-    </Stack>
+        }
+        spacing={5}
+      >
+        <div>
+          <a href={albumID}>
+            <img
+              src={item.album.images[2].url}
+              alt={item.name}
+            />
+          </a>
+        </div>
+        <Typography
+          sx={{ height: "min-content", width: "350px" }}
+          variant="body1"
+        >
+          {item.name} by {item.artists[0].name}
+        </Typography>
+      </Stack>
+    </div>
   );
 };
 
