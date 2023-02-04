@@ -52,7 +52,8 @@ function App() {
         },
       });
       console.log(data);
-    } else if (searchType === "album") {
+    } else if (searchType === "album" && searchKey !== "") {
+      setErrorMessage("hidden");
       e.preventDefault();
       const { data } = await axios.get("https://api.spotify.com/v1/search", {
         headers: {
@@ -64,7 +65,8 @@ function App() {
         },
       });
       console.log(data);
-    } else if (searchType === "track") {
+    } else if (searchType === "track" && searchKey !== "") {
+      setErrorMessage("hidden");
       e.preventDefault();
       const { data } = await axios.get("https://api.spotify.com/v1/search", {
         headers: {
