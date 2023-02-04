@@ -17,6 +17,7 @@ function App() {
   const [errorVisibility, setErrorMessage] = useState("hidden");
   const [data, setData] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [loadedType, setLoadedType] = useState();
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -62,30 +63,31 @@ function App() {
         setData(data.tracks.items);
       }
       setHasSearched("true");
+      setLoadedType(searchType);
     } else {
       setErrorMessage("visible");
       setHasSearched("false");
     }
   };
   const getComponent = (item) => {
-    if (searchType === "artist") {
+    if (loadedType === "artist") {
       return (
         <RenderArtists
-          data={item}
+          item={item}
           key={item.id}
         />
       );
-    } else if (searchType === "album") {
+    } else if (loadedType === "album") {
       return (
         <RenderAlbums
-          data={item}
+          item={item}
           key={item.id}
         />
       );
-    } else {
+    } else if (loadedType === "track") {
       return (
         <RenderTracks
-          data={item}
+          item={item}
           key={item.id}
         />
       );
