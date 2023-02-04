@@ -1,7 +1,9 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import RenderArtists from "./components/renderArtists/renderArtists";
+import RenderArtists from "./components/renderArtists/RenderArtists";
+import RenderAlbums from "./components/renderAlbums/RenderAlbums";
+import RenderTracks from "./components/renderTracks/RenderTracks";
 
 function App() {
   const CLIENT_ID = "4081228661664398aa13c58607ba9675";
@@ -65,13 +67,28 @@ function App() {
       setHasSearched("false");
     }
   };
-  const getComponent = (row) => {
+  const getComponent = (item) => {
     if (searchType === "artist") {
-      return <renderArtists data={row} />;
+      return (
+        <RenderArtists
+          data={item}
+          key={item.id}
+        />
+      );
     } else if (searchType === "album") {
-      return <renderAlbums data={row} />;
+      return (
+        <RenderAlbums
+          data={item}
+          key={item.id}
+        />
+      );
     } else {
-      return <renderTracks data={row} />;
+      return (
+        <RenderTracks
+          data={item}
+          key={item.id}
+        />
+      );
     }
   };
 

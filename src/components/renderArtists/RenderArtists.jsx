@@ -1,17 +1,7 @@
-// import React from "react";
+import React from "react";
 
-// const RenderArtists = () => {
-//   return searchResponse.map((artist) => (
-//     <div key={artist.id}>
-//       <img
-//         width={"50%"}
-//         src="{artist.images[0].url}"
-//         alt="{artist.name}"
-//         className="src"
-//       />
+const RenderArtists = ({ item }) => {
+  return <div>REEEEEEEEEEEEEEEEEEEEEEEEEEEENDER</div>;
+};
 
-//       {artist.name}
-//     </div>
-//   ));
-// };
-// export default RenderArtists;
+export default RenderArtists;
