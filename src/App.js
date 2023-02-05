@@ -7,7 +7,7 @@ import RenderTracks from "./components/renderTracks/RenderTracks";
 
 function App() {
   const CLIENT_ID = "4081228661664398aa13c58607ba9675";
-  const REDIRECT_URI = "https://lktayreact.netlify.app/";
+  const REDIRECT_URI = "https://lktayreact.netlify.app";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
 
@@ -54,7 +54,6 @@ function App() {
           type: searchType,
         },
       });
-      console.log(data);
       if (searchType === "artist") {
         setData(data.artists.items);
       } else if (searchType === "album") {
